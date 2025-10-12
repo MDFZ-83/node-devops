@@ -14,7 +14,7 @@ pipeline{
 
         stage("build & test"){
             steps{
-                bat "npm install && node test || true"
+                bat "npm install && npm test || true"
             }
         }
 
