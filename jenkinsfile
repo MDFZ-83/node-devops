@@ -1,0 +1,45 @@
+pipeline{
+    agent any
+
+    environment{
+        DOCKER_IMAGE= "mohammadfeizi/node-devops"
+    }
+
+    stages{
+        stage("checkout"){
+            steps{
+                git "https://github.com/MDFZ-83/node-devops.git"
+            }
+        }
+
+        stage("build & test"){
+            steps{
+                bat "npm install && node test || true"
+            }
+        }
+
+        stage("docker build & push"){
+            steps{
+                bat "docker build -t $DOCKER_IMAGE"
+
+                withCredentials([usernamePassword(credentialId: "DockerHub-credential" , usernameVariable: "DockerUser" , passwordVariable: "DockerPassw")]) {
+                    bat "echo $DockerPassw | docker login -u $DockerUser --password-stdin"
+                    bat "docker push $DOCKER_IMAGE"
+                }
+            }
+        }
+
+        stage("Terraform Init & Apply"){
+            steps{
+                bat "terraform init"
+                bat "terraform apply -auto-approve"
+            }
+        }
+
+        stage("Deploy Kubernetes"){
+            steps{
+                bat "kubectl apply -f k8s/"
+            }
+        }
+    }
+}
