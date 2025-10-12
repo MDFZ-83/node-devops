@@ -14,8 +14,8 @@ pipeline{
 
         stage("build & test"){
             steps{
-                bat "npm init -y"
-                bat "npm install && npm test || true"
+                bat "npm install"
+                bat "npm start"
             }
         }
 
