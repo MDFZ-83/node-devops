@@ -1,0 +1,24 @@
+{
+  "name": "devops",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MDFZ-83/node-devops.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MDFZ-83/node-devops/issues"
+  },
+  "homepage": "https://github.com/MDFZ-83/node-devops#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
