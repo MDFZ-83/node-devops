@@ -21,14 +21,23 @@ pipeline{
 
         stage("docker build & push"){
             steps{
+                echo "Starting Docker build..."
                 bat "docker build -t $DOCKER_IMAGE ."
+                echo "Docker build complete."
 
                 withCredentials([usernamePassword(credentialsId: "DockerHub-credential", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASSWORD")]) {
-                    bat "echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USER% --password-stdin"
+                    echo "Logging into Docker Hub..."
+                    bat "echo %DOCKER_PASSWORD%% | docker login -u %%DOCKER_USER% --password-stdin"
+                    echo "Login successful."
+                    
+                    echo "Pushing Docker image..."
                     bat "docker push %DOCKER_IMAGE%"
+                    echo "Docker push complete."
+
                 }
             }
         }
+
 
         stage("Terraform Init & Apply"){
             steps{
