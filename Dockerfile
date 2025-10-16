@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm inastall
+RUN npm install
 
 CMD [ "node" , "app.js" ]
