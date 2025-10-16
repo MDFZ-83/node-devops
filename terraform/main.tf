@@ -53,12 +53,12 @@ module "vpc" {
 
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
-  cluster_id    = "jenkins-demo-cluster"
+  cluster_name    = "jenkins-demo-cluster"
   cluster_version = "1.29"
   subnets         = module.vpc.private_subnets
   vpc_id          = module.vpc.vpc_id
 
-  managed_node_groups = {
+  node_groups = {
     default = {
       desired_capacity = 2
       max_capacity     = 3
