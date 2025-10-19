@@ -53,6 +53,7 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
+  version = "21.4.0"
 
   cluster_name    = "jenkins-demo-cluster"
   cluster_version = "1.29"
