@@ -1,0 +1,75 @@
+#  Node-DevOps  
+
+A full-stack **DevOps pipeline project** for a Node.js application — featuring **CI/CD automation with Jenkins**, **Infrastructure as Code with Terraform**, and **Kubernetes deployment**.  
+This project demonstrates how to build, containerize, and deploy a Node.js app on a Kubernetes cluster using modern DevOps practices.
+
+---
+
+# Prerequisites
+
+Before running this project, make sure you have:
+
+- **AWS account** (for provisioning EKS / infrastructure)
+- **Docker** installed and configured
+- **Terraform CLI**
+- **AWS CLI**
+- **kubectl**
+- **Jenkins** with:
+  - Docker access (`jenkins` user in the `docker` group)
+  - GitHub, Docker Hub, and AWS credentials configured
+  - Webhook integration from GitHub → Jenkins
+
+---
+
+# Setup and Usage
+
+| Step | Description |
+|------|--------------|
+| **1. Clone Repository** | ```bash git clone https://github.com/MDFZ-83/node-devops.git && cd node-devops ``` |
+| **2. Configure Jenkins** | Create a Jenkins Pipeline job → set credentials → configure GitHub webhook → use this repo’s `jenkinsfile`. |
+| **3. Deploy Infrastructure** | Go to the `terraform/` folder: <br>```bash terraform init && terraform apply -auto-approve``` |
+| **4. Run Jenkins Pipeline** | Jenkins will automatically build, test, dockerize, and deploy the app. |
+| **5. Verify Kubernetes Deployment** | ```bash kubectl get pods && kubectl get svc``` |
+| **6. Access the App** | Use the external IP from your LoadBalancer service in your browser. |
+
+---
+
+# Components Overview
+
+## `app.js`
+A simple Express.js application exposing a basic REST endpoint.
+
+## `Dockerfile`
+Defines how the Node.js app is containerized.  
+Build command:
+```bash
+docker build -t node-devops .
+```
+
+## `jenkinsfile`
+Jenkins pipeline stages for:
+- Cloning source code  
+- Installing dependencies & running tests  
+- Building & pushing Docker image  
+- Deploying to Kubernetes via `kubectl`
+
+## `terraform/`
+Contains Terraform scripts to build the infrastructure — VPC, EKS cluster, worker nodes, etc.
+
+## `k8s/`
+Kubernetes manifests used for deploying and exposing the application (Deployment, Service, etc.).
+
+---
+
+# CI/CD Flow
+
+1. Developer pushes new code to GitHub  
+2. GitHub triggers Jenkins via webhook  
+3. Jenkins:
+   - Builds and tests the Node app  
+   - Builds and pushes Docker image  
+   - Applies Kubernetes manifests (via kubectl or ArgoCD)
+4. Application runs inside the Kubernetes cluster  
+5. (Optional) Add monitoring with Prometheus & Grafana  
+
+---
